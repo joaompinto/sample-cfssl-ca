@@ -10,33 +10,29 @@ DISCLAIMER:
 1. **Use at your own risk**
 2. **Do not use this for production systems**
 
-I created this repository for personal use and for sharing with folks that
-need to generate Certificate Authorities and Certificates for
-**testing purposes only**. Much of this is scattered across the web
-and I got tired of Googling all the time and needed to automate portions
-of this for certain processes.  
+Get the CFSSL binaries:
+```sh
+curl -Lo ~/.local/bin/cfssljson https://github.com/cloudflare/cfssl/releases/download/v1.6.3/cfssljson_1.6.3_linux_amd64 
+curl -Lo ~/.local/bin/cfssl https://github.com/cloudflare/cfssl/releases/download/v1.6.3/cfssl_1.6.3_linux_amd64 
+chmod 755 ~/.local/bin/cfssl*
+```
 
-There is much that goes into running a production
-grade certificate authority, this guide is far from
-comprehensive. Hopefully it's helpful in some way.
-
-And sure, you can do much of this without CFSSL, but I appreciate the
-flexibility provided by their use of json configuration files.
-
-See also: [Jason Riddle's Guide](https://github.com/jason-riddle/generating-certs/wiki/Generating-a-Root-CA,-Server,-and-Client-Certs-using-CFSSL)
+Based on[sample-cfssl-ca](https://github.com/drewfarris/sample-cfssl-ca)
 
 ### Creating the Certificate Authority
 
 Create ca-csr.json:
 
-```
-$> cfssl gencert -initca ca-csr.json | cfssljson -bare ca
-2017/06/09 18:40:36 [INFO] generating a new CA key and certificate from CSR
-2017/06/09 18:40:36 [INFO] generate received request
-2017/06/09 18:40:36 [INFO] received CSR
-2017/06/09 18:40:36 [INFO] generating key: rsa-2048
-2017/06/09 18:40:37 [INFO] encoded CSR
-2017/06/09 18:40:37 [INFO] signed certificate with serial number 584075898042636948700563739914716129807961430233
+```sh
+cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+
+
+curl -LO https://github.com/drewfarris/sample-cfssl-ca/archive/refs/heads/master.tar.gz
+tar xvf master.tar.gz
+cd sample-cfssl-ca-master
+
+# Creating the Certificate Authority
+cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 ```
 
 Create cs-config.json
