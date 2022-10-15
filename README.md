@@ -4,11 +4,10 @@ Sample Cloudflare SSL (CFSSL) Certificate Authority
 This repository contains configuration files and command-line examples
 for generating a Certificate Authority and Certificates using Cloudflare's
 PKI and TLS toolkit, otherwise know as CFSSL, available at
-[https://github.com/cloudflare/cfssl](https://github.com/cloudflare/cfssl)
+[https://github.com/cloudflare/cfssl](https://github.com/cloudflare/cfssl) .
 
-DISCLAIMER:
-1. **Use at your own risk**
-2. **Do not use this for production systems**
+Based on[sample-cfssl-ca](https://github.com/drewfarris/sample-cfssl-ca)
+
 
 Get the CFSSL binaries:
 ```sh
@@ -17,33 +16,21 @@ curl -Lo ~/.local/bin/cfssl https://github.com/cloudflare/cfssl/releases/downloa
 chmod 755 ~/.local/bin/cfssl*
 ```
 
-Based on[sample-cfssl-ca](https://github.com/drewfarris/sample-cfssl-ca)
-
-### Creating the Certificate Authority
-
-Create ca-csr.json:
-
+Get the sample archives
 ```sh
-cfssl gencert -initca ca-csr.json | cfssljson -bare ca
-
-
-curl -LO https://github.com/drewfarris/sample-cfssl-ca/archive/refs/heads/master.tar.gz
+curl -LO https://github.com/joaompinto/sample-cfssl-ca/archive/refs/heads/master.tar.gz
 tar xvf master.tar.gz
 cd sample-cfssl-ca-master
+```
+
 
 # Creating the Certificate Authority
+```sh
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 ```
 
-Create cs-config.json
-
-Keep in mind that none of the `.pem` files generated in this process are encrypted - and should be protected as such
-
-### Creating the Server Keypair
-
-Create prototype-server-csr.json:
-
-```
+# Creating the Server Keypair
+```sh
 cfssl gencert \
   -ca=ca.pem \
   -ca-key=ca-key.pem \
@@ -52,21 +39,9 @@ cfssl gencert \
   prototype-server-csr.json | cfssljson -bare prototype-server
 ```
 
-The output is something like:
-
-```
-2017/06/09 18:48:31 [INFO] generate received request
-2017/06/09 18:48:31 [INFO] received CSR
-2017/06/09 18:48:31 [INFO] generating key: rsa-2048
-2017/06/09 18:48:31 [INFO] encoded CSR
-2017/06/09 18:48:31 [INFO] signed certificate with serial number 615205400119918557792655758449511430876160885834
-```
-
 ### Creating the Client Keypair
 
-Create prototype-client-csr.json:
-
-```
+```sh
 cfssl gencert \
     -ca=ca.pem \
     -ca-key=ca-key.pem  \
@@ -75,15 +50,6 @@ cfssl gencert \
     prototype-client-csr.json | cfssljson -bare prototype-client
 ```
 
-The output is something like:
-
-```
-2017/06/09 18:52:29 [INFO] generate received request
-2017/06/09 18:52:29 [INFO] received CSR
-2017/06/09 18:52:29 [INFO] generating key: rsa-2048
-2017/06/09 18:52:30 [INFO] encoded CSR
-2017/06/09 18:52:30 [INFO] signed certificate with serial number 474147588856460409123627575091895953881007131809
-````
 
 ### Creating PCKS12 Keystores
 
